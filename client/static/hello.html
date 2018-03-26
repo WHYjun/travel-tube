@@ -1,0 +1,16 @@
+<head>
+    <title>Search</title>
+</head>
+    <body>
+        <div class="title">
+            <h1>Search</h1>
+        </div>
+        <div id="content">
+            <form method="post" action="{{ url_for('search_result') }}">
+                <label for="keyword">Keyword:</label>
+                <input type="keyword" name="keyword" />
+                <input type="submit" />
+            </form>
+         </div>
+    </body>
+<a href='/'>Home</a>
