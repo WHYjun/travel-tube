@@ -35,7 +35,13 @@ def search_result():
     parser.add_argument('--max-results', help='Max results', default=25)
     args = parser.parse_args()
     videos = youtube_search(args)
-    return json.dumps(videos)
+    # return json.dumps(videos)
+    # Just for team assignment 3
+    message = []
+    for video in videos:
+        message.append(video['title'])
+    return render_template('search_result.html', message = message)
+
 
 # youtube search function
 # Adapted from Youtube Sample Code: https://github.com/youtube/api-samples/blob/master/python/search.py
