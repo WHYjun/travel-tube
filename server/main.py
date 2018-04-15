@@ -8,6 +8,7 @@ from googleapiclient.discovery import build
 import os
 import json
 import argparse
+import requests
 
 TEMPLATE_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'client/') # app.js or index.html
 STATIC_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'client/static') # static files
@@ -16,9 +17,14 @@ AUTH_PATH = os.path.join(os.path.dirname((os.path.abspath(__file__))), 'auth.jso
 with open(AUTH_PATH) as auth:
     AUTH = json.load(auth)
 
+# Youtube
 YOUTUBE_API_KEY = AUTH['YOUTUBE']['API_KEY']
 YOUTUBE_API_SERVICE_NAME = 'youtube'
 YOUTUBE_API_VERSION = 'v3'
+
+# Eventbrite
+EVENTBRITE_OAUTH = AUTH['EVENTBRITE']['OAUTH_TOKEN']
+EVENTBRITE_URI = "https://www.eventbriteapi.com/v3/"
 
 app = Flask(__name__,template_folder=STATIC_PATH)
 CORS(app)
@@ -35,12 +41,12 @@ def search_result():
     parser.add_argument('--max-results', help='Max results', default=25)
     args = parser.parse_args()
     videos = youtube_search(args)
-    # return json.dumps(videos)
+    return json.dumps(videos)
     # Just for team assignment 3
-    message = []
-    for video in videos:
-        message.append(video['title'])
-    return render_template('search_result.html', message = message)
+    # message = []
+    # for video in videos:
+    #     message.append(video['title'])
+    # return render_template('search_result.html', message = message)
 
 
 # youtube search function
@@ -70,6 +76,17 @@ def youtube_search(options):
             })
     return videos
 
+def eventbrite_search():
+    headers =  {
+    'Authorization': "Bearer " + EVENTBRITE_OAUTH,
+    'Cache-Control': "no-cache",
+    }
+    params = {'location.address': 'Boston'}
+    res = requests.request("GET", EVENTBRITE_URI+"events/search", headers = headers, params = params)
+    event = json.loads(res.text)
+    # Need Pre-processing before sending json to front-end
+    return event
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
