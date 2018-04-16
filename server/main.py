@@ -4,6 +4,7 @@ from flask_cors import CORS
 from flask_oauth import OAuth
 
 from googleapiclient.discovery import build
+import googlemaps
 
 import os
 import json
@@ -33,6 +34,10 @@ EVENTBRITE_URI = "https://www.eventbriteapi.com/v3/"
 # Twitter 
 TWITTER_API_KEY = AUTH['TWITTER']['API_KEY']
 TWITTER_API_SECRET = AUTH['TWITTER']['API_SECRET']
+
+# Google Maps
+GOOGLE_MAP_API_KEY = AUTH['GOOGLE_MAP']['API_KEY']
+gmaps = googlemaps.Client(key=GOOGLE_MAP_API_KEY)
 
 # OAuth
 oauth = OAuth()
@@ -152,7 +157,9 @@ def eventbrite_search():
     event = json.loads(res.text)
     # Need Pre-processing before sending json to front-end
     return event
-    
+
+def reverse_geocode(GeoCode):
+    return gmaps.reverse_geocode(GeoCode)
 
 if __name__ == '__main__':
     app.run(debug=True)
