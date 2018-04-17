@@ -54,7 +54,7 @@ app = Flask(__name__,template_folder=STATIC_PATH)
 app.secret_key = SECRET_KEY
 CORS(app)
 
-@app.route('/hello', methods=['GET'])
+@app.route('/', methods=['GET'])
 def hello():
     return render_template('hello.html')
 
@@ -63,7 +63,7 @@ def hello():
 def get_twitter_token(token=None):
     return session.get('twitter_token')
  
-@app.route('/')
+@app.route('/index')
 def index():
     access_token = session.get('access_token')
     if access_token is None:
