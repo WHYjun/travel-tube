@@ -13,31 +13,52 @@ import requests
 
 TEMPLATE_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'client/') # app.js or index.html
 STATIC_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'client/static') # static files
-AUTH_PATH = os.path.join(os.path.dirname((os.path.abspath(__file__))), 'auth.json')
 
-# Get API keys from auth.json
-with open(AUTH_PATH) as auth:
-    AUTH = json.load(auth)
+try: # for localhost
+    AUTH_PATH = os.path.join(os.path.dirname((os.path.abspath(__file__))), 'auth.json')
+    # Get API keys from auth.json
+    with open(AUTH_PATH) as auth:
+        AUTH = json.load(auth)
 
-# Flask Configuration
-SECRET_KEY = AUTH['FLASK']['SECRET_KEY']
+    # Flask Configuration
+    SECRET_KEY = AUTH['FLASK']['SECRET_KEY']
 
-# Youtube
-YOUTUBE_API_KEY = AUTH['YOUTUBE']['API_KEY']
-YOUTUBE_API_SERVICE_NAME = 'youtube'
-YOUTUBE_API_VERSION = 'v3'
+    # Youtube
+    YOUTUBE_API_KEY = AUTH['YOUTUBE']['API_KEY']
+    YOUTUBE_API_SERVICE_NAME = 'youtube'
+    YOUTUBE_API_VERSION = 'v3'
 
-# Eventbrite
-EVENTBRITE_OAUTH = AUTH['EVENTBRITE']['OAUTH_TOKEN']
-EVENTBRITE_URI = "https://www.eventbriteapi.com/v3/"
+    # Eventbrite
+    EVENTBRITE_OAUTH = AUTH['EVENTBRITE']['OAUTH_TOKEN']
+    EVENTBRITE_URI = "https://www.eventbriteapi.com/v3/"
 
-# Twitter 
-TWITTER_API_KEY = AUTH['TWITTER']['API_KEY']
-TWITTER_API_SECRET = AUTH['TWITTER']['API_SECRET']
+    # Twitter 
+    TWITTER_API_KEY = AUTH['TWITTER']['API_KEY']
+    TWITTER_API_SECRET = AUTH['TWITTER']['API_SECRET']
 
-# Google Maps
-GOOGLE_MAP_API_KEY = AUTH['GOOGLE_MAP']['API_KEY']
-gmaps = googlemaps.Client(key=GOOGLE_MAP_API_KEY)
+    # Google Maps
+    GOOGLE_MAP_API_KEY = AUTH['GOOGLE_MAP']['API_KEY']
+    gmaps = googlemaps.Client(key=GOOGLE_MAP_API_KEY)
+except: # for heroku app
+    # Flask Configuration
+    SECRET_KEY = FLASK_KEY
+
+    # Youtube
+    YOUTUBE_API_KEY = YOUTUBE_KEY
+    YOUTUBE_API_SERVICE_NAME = 'youtube'
+    YOUTUBE_API_VERSION = 'v3'
+
+    # Eventbrite
+    EVENTBRITE_OAUTH = EVENTBRITE_OAUTH
+    EVENTBRITE_URI = "https://www.eventbriteapi.com/v3/"
+
+    # Twitter 
+    TWITTER_API_KEY = TWITTER_KEY
+    TWITTER_API_SECRET = TWITTER_SECRET
+
+    # Google Maps
+    GOOGLE_MAP_API_KEY = GOOGLE_MAP_KEY
+    gmaps = googlemaps.Client(key=GOOGLE_MAP_API_KEY)
 
 # OAuth
 oauth = OAuth()
@@ -54,7 +75,7 @@ app = Flask(__name__,template_folder=STATIC_PATH)
 app.secret_key = SECRET_KEY
 CORS(app)
 
-@app.route('/hello', methods=['GET'])
+@app.route('/', methods=['GET'])
 def hello():
     return render_template('hello.html')
 
@@ -63,7 +84,7 @@ def hello():
 def get_twitter_token(token=None):
     return session.get('twitter_token')
  
-@app.route('/')
+@app.route('/index')
 def index():
     access_token = session.get('access_token')
     if access_token is None:
