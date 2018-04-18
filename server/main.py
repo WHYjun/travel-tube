@@ -41,23 +41,23 @@ try: # for localhost
     gmaps = googlemaps.Client(key=GOOGLE_MAP_API_KEY)
 except: # for heroku app
     # Youtube
-    YOUTUBE_API_KEY = os.environ.get(YOUTUBE_KEY)
+    YOUTUBE_API_KEY = os.environ.get('YOUTUBE_KEY')
     YOUTUBE_API_SERVICE_NAME = 'youtube'
     YOUTUBE_API_VERSION = 'v3'
 
     # Flask Configuration
-    SECRET_KEY = os.environ.get(FLASK_KEY)
+    SECRET_KEY = os.environ.get('FLASK_KEY')
 
     # Eventbrite
-    EVENTBRITE_OAUTH = os.environ.get(EVENTBRITE_OAUTH)
+    EVENTBRITE_OAUTH = os.environ.get('EVENTBRITE_OAUTH')
     EVENTBRITE_URI = "https://www.eventbriteapi.com/v3/"
 
     # Twitter 
-    TWITTER_API_KEY = os.environ.get(TWITTER_KEY)
-    TWITTER_API_SECRET = os.environ.get(TWITTER_SECRET)
+    TWITTER_API_KEY = os.environ.get('TWITTER_KEY')
+    TWITTER_API_SECRET = os.environ.get('TWITTER_SECRET')
 
     # Google Maps
-    GOOGLE_MAP_API_KEY = os.environ.get(GOOGLE_MAP_KEY)
+    GOOGLE_MAP_API_KEY = os.environ.get('GOOGLE_MAP_KEY')
     gmaps = googlemaps.Client(key=GOOGLE_MAP_API_KEY)
 
 # OAuth
