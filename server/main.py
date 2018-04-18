@@ -40,13 +40,13 @@ try: # for localhost
     GOOGLE_MAP_API_KEY = AUTH['GOOGLE_MAP']['API_KEY']
     gmaps = googlemaps.Client(key=GOOGLE_MAP_API_KEY)
 except: # for heroku app
-    # Flask Configuration
-    SECRET_KEY = os.environ.get(FLASK_KEY)
-
     # Youtube
     YOUTUBE_API_KEY = os.environ.get(YOUTUBE_KEY)
     YOUTUBE_API_SERVICE_NAME = 'youtube'
     YOUTUBE_API_VERSION = 'v3'
+
+    # Flask Configuration
+    SECRET_KEY = os.environ.get(FLASK_KEY)
 
     # Eventbrite
     EVENTBRITE_OAUTH = os.environ.get(EVENTBRITE_OAUTH)
