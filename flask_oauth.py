@@ -11,6 +11,7 @@
 import httplib2
 from functools import wraps
 # urlparse module has been renamed in Python 3.x
+# Move this package to local directory for dependencies. FLASK_OAUTH 0.12 is not updated yet.
 try:
     from urlparse import urljoin
 except ImportError:
