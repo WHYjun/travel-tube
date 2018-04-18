@@ -5,6 +5,7 @@ Flask==0.12.2
 Flask-Cors==3.0.3
 google-api-python-client==1.6.5
 googlemaps==2.5.1
+gunicorn==19.7.1
 httplib2==0.11.0
 idna==2.6
 itsdangerous==0.24

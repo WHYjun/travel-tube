@@ -11,8 +11,8 @@ import json
 import argparse
 import requests
 
-TEMPLATE_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'client/') # app.js or index.html
-STATIC_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'client/static') # static files
+TEMPLATE_PATH = os.path.join(os.path.dirname((os.path.abspath(__file__))), 'client/') # app.js or index.html
+STATIC_PATH = os.path.join(os.path.dirname((os.path.abspath(__file__))), 'client/static') # static files
 
 try: # for localhost
     AUTH_PATH = os.path.join(os.path.dirname((os.path.abspath(__file__))), 'auth.json')
@@ -40,24 +40,24 @@ try: # for localhost
     GOOGLE_MAP_API_KEY = AUTH['GOOGLE_MAP']['API_KEY']
     gmaps = googlemaps.Client(key=GOOGLE_MAP_API_KEY)
 except: # for heroku app
-    # Flask Configuration
-    SECRET_KEY = os.environ.get(FLASK_KEY)
-
     # Youtube
-    YOUTUBE_API_KEY = os.environ.get(YOUTUBE_KEY)
+    YOUTUBE_API_KEY = os.environ.get('YOUTUBE_KEY')
     YOUTUBE_API_SERVICE_NAME = 'youtube'
     YOUTUBE_API_VERSION = 'v3'
 
+    # Flask Configuration
+    SECRET_KEY = os.environ.get('FLASK_KEY')
+
     # Eventbrite
-    EVENTBRITE_OAUTH = os.environ.get(EVENTBRITE_OAUTH)
+    EVENTBRITE_OAUTH = os.environ.get('EVENTBRITE_OAUTH')
     EVENTBRITE_URI = "https://www.eventbriteapi.com/v3/"
 
     # Twitter 
-    TWITTER_API_KEY = os.environ.get(TWITTER_KEY)
-    TWITTER_API_SECRET = os.environ.get(TWITTER_SECRET)
+    TWITTER_API_KEY = os.environ.get('TWITTER_KEY')
+    TWITTER_API_SECRET = os.environ.get('TWITTER_SECRET')
 
     # Google Maps
-    GOOGLE_MAP_API_KEY = os.environ.get(GOOGLE_MAP_KEY)
+    GOOGLE_MAP_API_KEY = os.environ.get('GOOGLE_MAP_KEY')
     gmaps = googlemaps.Client(key=GOOGLE_MAP_API_KEY)
 
 # OAuth
@@ -183,4 +183,5 @@ def reverse_geocode(GeoCode):
     return gmaps.reverse_geocode(GeoCode)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # app.run(debug=True)
+    app.run()
