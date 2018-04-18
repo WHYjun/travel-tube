@@ -11,8 +11,8 @@ import json
 import argparse
 import requests
 
-TEMPLATE_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'client/') # app.js or index.html
-STATIC_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'client/static') # static files
+TEMPLATE_PATH = os.path.join(os.path.dirname((os.path.abspath(__file__))), 'client/') # app.js or index.html
+STATIC_PATH = os.path.join(os.path.dirname((os.path.abspath(__file__))), 'client/static') # static files
 
 try: # for localhost
     AUTH_PATH = os.path.join(os.path.dirname((os.path.abspath(__file__))), 'auth.json')
@@ -183,4 +183,5 @@ def reverse_geocode(GeoCode):
     return gmaps.reverse_geocode(GeoCode)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # app.run(debug=True)
+    app.run()
