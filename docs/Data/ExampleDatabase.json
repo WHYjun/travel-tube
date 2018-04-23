@@ -1,0 +1,43 @@
+{
+	"_comment":"The data store will be separated into two parts, users and youtube search results."
+    "users":[
+        {
+			"_comment":"Each user will be given an entry within users. The expected values of each field will be the returned token from OAuth for 'twitter-token', the user's name in 'name', and the user's previous search in 'previous-search', if it exists. The 'twitter-token' field will be required as it means that OAuth was successful"
+            "twitter-token": "FhdkDnakEjhF",
+            "name": "John Smith",
+            "previous-search": "Boston"
+        },
+        {
+            "twitter-token": "asndDNfalksdfnSDkfhasdkf",
+            "name": "Jane Doe",
+            "previous-search": "Chicago"
+    ],
+    "youtube-search":[
+        {
+			"_comment":"this will be the cache of the application as it will contain the video titles and ids of the locations that have already been searched by users."
+            "Quincy Market":[
+                {
+					"_comment":"Each location will have up to 25 results with their titles and ids stored in the database."
+                    "title":"Boston Quincy Market",
+                    "id":"ForY7y8kdHY"
+                },
+                {
+                    "title": "Faneuil Hall & Quincy Market Tour - Boston MA",
+                    "id": "GSbB3PZ8k4g",
+                }
+            ]
+        },
+        {
+            "New York":[
+                {
+                    "title": "25 Ways to Gucci: New York",
+                    "id": "fchdHijFRJE"
+                },
+                {
+                    "title": "New York City Vacation Travel Guide | Expedia",
+                    "id": "MtCMtC50gwY"
+                }
+            ]
+        }
+    ]
+}
