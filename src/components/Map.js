@@ -2,6 +2,7 @@ import React from 'react'
 import { compose, withProps } from "recompose"
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
 
+// render google map using react-google-maps
 const Map = compose(
   withProps({
     googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyB_61nxewfNdBvUiTl1cT6gYcg4qehhSOQ&v=3.exp&libraries=geometry,drawing,places",
@@ -11,7 +12,7 @@ const Map = compose(
   }),
   withScriptjs,
   withGoogleMap
-)(props =>
+)((props) =>
   <GoogleMap
     defaultZoom={8}
     defaultCenter={props.coords}
