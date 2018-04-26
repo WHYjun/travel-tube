@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import MapContainer from './MapContainer'
 import VideoList from './VideoList'
 import EventList from './EventList'
-import { Segment } from 'semantic-ui-react'
+import Login from './Login'
+import { Segment, Header, Container, Button } from 'semantic-ui-react'
 import axios from 'axios'
 
 class Main extends Component {
@@ -10,6 +11,7 @@ class Main extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      authToken: 'test',
       coords: {
         lat: 42.350214,
         lng: -71.126877,
@@ -49,7 +51,52 @@ class Main extends Component {
     this.setState({ coords })
   }
 
+  loginButton = () => {
+    // if there is no token = fail case
+    if (!this.state.authToken) {
+      return (
+        <Button primary> Login with Twitter </Button>
+      )
+    }
+    // if there is a token
+    return (
+      <Button> Logout </Button>
+    )
+  }
+
+  showMap = () => {
+    // if no token
+    if (!this.state.authToken) {
+      return <h3> Please login to use app </h3>
+    }
+    // if there is a token
+    return (
+      <div style={{ marginTop: 20 }}>
+        <MapContainer
+          coords={this.state.coords}
+          onMapClick={this.onMapClick}
+        />
+        <EventList events={this.state.events}/>
+        <VideoList videos={this.state.videos}/>
+      </div>
+    )
+  }
+
+
+
   render() {
+    return (
+      <div style={{ textAlign:'center' }}>
+        <Header style={{ textAlign:'center' }} as='h1'> TravelTube </Header>
+        <div style={{ textAlign:'center' }}>
+          {this.loginButton()}
+          {this.showMap()}
+        </div>
+      </div>
+
+
+    )
+    /*
     return (
       <Segment.Group horizontal>
         <Segment>
@@ -66,6 +113,7 @@ class Main extends Component {
         </Segment>
       </Segment.Group>
     );
+    */
   }
 }
 
