@@ -7,7 +7,7 @@ const VideoListItem = (props) => {
 
 
   return (
-    <li onClick={() => onVideoSelect(video)} className="list-group-item">
+    <li onClick={() => onVideoSelect(video)} className="list-group-item" style={{ cursor: 'pointer' }}>
       <div className="video-list media">
         <div className="media-left">
           <img className="media-object" src={imageUrl} alt={"video_thumbnail"}/>

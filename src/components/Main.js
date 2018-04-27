@@ -6,13 +6,14 @@ import Login from './Login'
 import { Segment, Header, Container, Button } from 'semantic-ui-react'
 import axios from 'axios'
 import { Route } from 'react-router'
+import { TwitterLogin } from 'react-twitter-auth'
 
 class Main extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      username: 'test',
+      username: null,
       coords: {
         lat: 42.350214,
         lng: -71.126877,
@@ -25,8 +26,9 @@ class Main extends Component {
 
   async componentDidMount() {
     try {
+      const { lat, lng } = this.state.coords
       // get data from heroku backend
-      let response = await axios.post('https://quiet-gorge-15205.herokuapp.com/fake_result')
+      let response = await axios.post('https://quiet-gorge-15205.herokuapp.com/fake_result', { lat, lng })
       // extract data from http response
       const data = response.data
       // update state with data
@@ -55,14 +57,8 @@ class Main extends Component {
   // user pressed login button
   async loginPressed() {
     console.log('login pressed')
-<<<<<<< HEAD
-    window.open('http://127.0.0.1:5000/login')
+    // window.open('http://127.0.0.1:5000/login')
     // this.setState({ username: 'test' })
-=======
-    let response = await axios.get('http://127.0.0.1:5000/login')
-    this.setState({ username: 'test' })
->>>>>>> 402f09ce0675bb46d1b327b0951fe55d95ae4074
-
   }
 
   // user pressed logout button
@@ -75,7 +71,7 @@ class Main extends Component {
     // if there is no token = fail case
     if (!this.state.username) {
       return (
-        <Button onClick={() => this.loginPressed()}> Login with Twitter </Button>
+
       )
     }
     // if there is a token
