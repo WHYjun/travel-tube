@@ -123,17 +123,30 @@ def oauth_authorized(resp):
         resp['oauth_token'],
         resp['oauth_token_secret']
     )
-    return redirect(url_for('index'))
+    return redirect(url_for('index')) # TODO: Change this
 
 @app.route('/search_result', methods=['POST'])
 def search_result():
-    keyword = request.form.get('keyword')
+    #latlng = json.loads(request.data)
+    latlng = {
+        'lat': 42.360082,
+        'lng': -71.058880
+    }
+    geocode = (latlng['lat'],latlng['lng'])
+    events = eventbrite_search(latlng['lat'],latlng['lng'])
+    address = reverse_geocode(geocode)
+    city_name = get_cityname(address[0]['address_components'])
     parser = argparse.ArgumentParser()
-    parser.add_argument('--q', help='Search term', default=keyword)
-    parser.add_argument('--max-results', help='Max results', default=25)
+    parser.add_argument('--q', help='Search term', default=city_name)
+    parser.add_argument('--max-results', help='Max results', default=10)
     args = parser.parse_args()
     videos = youtube_search(args)
-    return json.dumps(videos)
+    data = {
+        "city_name": city_name,
+        "events": events,
+        "videos": videos
+    }
+    return json.dumps(data)
     # Just for team assignment 3
     # message = []
     # for video in videos:
@@ -157,30 +170,56 @@ def youtube_search(options):
         maxResults=options.max_results
     ).execute()
 
-    videos = []
+    videos = {}
+    index = 0
 
     # Store the result as a json format.
     for result in response.get('items', []):
         if result['id']['kind'] == 'youtube#video':
-            videos.append({
+            key = "video" + str(index)
+            index += 1
+            videos[key] = {
                 'title': result['snippet']['title'],
-                'id': result['id']['videoId']
-            })
+                'image_url': result['snippet']['thumbnails']['default'], # medium, high
+                'channel_name': result['snippet']['channelTitle'],
+                'video_id': result['id']['videoId']
+            }
     return videos
 
-def eventbrite_search():
+def eventbrite_search(latitude, longitude):
     headers =  {
     'Authorization': "Bearer " + EVENTBRITE_OAUTH,
     'Cache-Control': "no-cache",
     }
-    params = {'location.address': 'Boston'}
+    params = {'location.latitude': latitude, 'location.longitude': longitude}
     res = requests.request("GET", EVENTBRITE_URI+"events/search", headers = headers, params = params)
-    event = json.loads(res.text)
-    # Need Pre-processing before sending json to front-end
-    return event
+    event_dict = json.loads(res.text)
+    events = {}
+    index = 0
+    for event in event_dict['events']:
+        key = "event" + str(index)
+        index += 1
+        if index > 5:
+            return events
+        events[key] = {
+            'name': event['name']['text'],
+            'description': event['description']['text'],
+            'url': event['url'],
+            'start': event['start']['utc'],
+            'end': event['end']['utc'],
+            'id': event['id']
+        }
+        if event['logo'] is not None:
+            events[key]['image_url'] = event['logo']['url']
+    return events
 
 def reverse_geocode(GeoCode):
     return gmaps.reverse_geocode(GeoCode)
+
+def get_cityname(address_components):
+    for component in address_components:
+        if "locality" in component['types']:
+            return component['short_name'] 
 
 if __name__ == '__main__':
     # app.run(debug=True)
