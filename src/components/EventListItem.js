@@ -8,7 +8,7 @@ const EventListItem = (props) => {
 
 
   return (
-    <li onClick={() => onEventSelect(event)}>
+    <li onClick={() => onEventSelect(event)} style={{ cursor: 'pointer' }}>
     <Segment.Group raised>
       <Header as='h5'> {event.name} </Header>
       <Image src={imageUrl} size="mini" circular/>
