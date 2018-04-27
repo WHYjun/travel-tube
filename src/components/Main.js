@@ -11,7 +11,7 @@ class Main extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      authToken: 'test',
+      username: 'test',
       coords: {
         lat: 42.350214,
         lng: -71.126877,
@@ -51,22 +51,36 @@ class Main extends Component {
     this.setState({ coords })
   }
 
+  // user pressed login button
+  async loginPressed() {
+    console.log('login pressed')
+    // let response = await axios.get('https://quiet-gorge-15205.herokuapp.com')
+    this.setState({ username: 'test' })
+
+  }
+
+  // user pressed logout button
+  logoutPressed = () => {
+    // remove username from state
+    this.setState({ username: null })
+  }
+
   loginButton = () => {
     // if there is no token = fail case
-    if (!this.state.authToken) {
+    if (!this.state.username) {
       return (
-        <Button primary> Login with Twitter </Button>
+        <Button onClick={() => this.loginPressed()}> Login with Twitter </Button>
       )
     }
     // if there is a token
     return (
-      <Button> Logout </Button>
+      <Button onClick={() => this.logoutPressed()}> Logout </Button>
     )
   }
 
   showMap = () => {
     // if no token
-    if (!this.state.authToken) {
+    if (!this.state.username) {
       return <h3> Please login to use app </h3>
     }
     // if there is a token
