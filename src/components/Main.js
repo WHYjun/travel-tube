@@ -54,7 +54,7 @@ class Main extends Component {
   // user pressed login button
   async loginPressed() {
     console.log('login pressed')
-    // let response = await axios.get('https://quiet-gorge-15205.herokuapp.com')
+    let response = await axios.get('http://127.0.0.1:5000/login')
     this.setState({ username: 'test' })
 
   }

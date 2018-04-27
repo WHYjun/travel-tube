@@ -6,7 +6,8 @@ import { List } from 'semantic-ui-react'
 const VideoList = (props) => {
 
   const onVideoSelect = (video) => {
-    console.log(video)
+    console.log('video clicked')
+    window.open(`https://www.youtube.com/watch?v=${video.video_id}`, '_blank')
   }
 
 
