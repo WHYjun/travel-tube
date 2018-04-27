@@ -5,6 +5,7 @@ import EventList from './EventList'
 import Login from './Login'
 import { Segment, Header, Container, Button } from 'semantic-ui-react'
 import axios from 'axios'
+import { Route } from 'react-router'
 
 class Main extends Component {
 
@@ -54,8 +55,8 @@ class Main extends Component {
   // user pressed login button
   async loginPressed() {
     console.log('login pressed')
-    // let response = await axios.get('https://quiet-gorge-15205.herokuapp.com')
-    this.setState({ username: 'test' })
+    window.open('http://127.0.0.1:5000/login')
+    // this.setState({ username: 'test' })
 
   }
 
