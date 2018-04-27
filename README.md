@@ -1,6 +1,7 @@
-# travel-tube
+# travel-tube 
 
-## Introduction
+## App Summary
+
 
 Traveling. Something we all yearn for, yet something we all do so wrong when we finally have the opportunity to do so! A great traveling experience should be defined by three pillars: spontaneity, relaxation, and fun.
 
