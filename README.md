@@ -2,6 +2,7 @@
 
 ## App Summary
 
+
 Traveling. Something we all yearn for, yet something we all do so wrong when we finally have the opportunity to do so! A great traveling experience should be defined by three pillars: spontaneity, relaxation, and fun.
 
 Instead though, traveling has turned into a painstakingly long preparation process that only sucks the joy out of something we love so much. You have to pick where to go, which alone can be a headache! Once that has been done, figuring exactly what you're going to be doing every minute of every day to maximize your time in this new city is like putting all the pieces together to an impossible puzzle. Who wants to be doing that? And a travel agent you say? Why pay hundreds, if not thousands, of dollars to someone to do a job you can easily do? Once you finally get to your destination, everything is so planned you feel more like a robot than someone enjoying a new city. 
