@@ -8,7 +8,8 @@ const EventList = (props) => {
   console.log(props.events)
 
   const onEventSelect = (event) => {
-    console.log(event)
+    console.log('event clicked')
+    window.open(event.url, '_blank')
   }
 
 

@@ -8,12 +8,14 @@ const EventListItem = (props) => {
 
 
   return (
+    <li onClick={() => onEventSelect(event)}>
     <Segment.Group raised>
       <Header as='h5'> {event.name} </Header>
       <Image src={imageUrl} size="mini" circular/>
       <p> {event.start} - {event.end} </p>
       <Header> {event.description} </Header>
     </Segment.Group>
+    </li>
   )
 
   /*
