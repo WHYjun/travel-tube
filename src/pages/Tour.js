@@ -11,8 +11,8 @@ class Tour extends Component {
     super(props)
     this.state = {
       coords: {
-        lat: 42.350214,
-        lng: -71.126877,
+        lat: 42.34892444910906,
+        lng: -71.10514202833048,
       },
       city: '',
       videos: [],
@@ -21,6 +21,24 @@ class Tour extends Component {
   }
 
   async componentDidMount() {
+    try {
+      const { lat, lng } = this.state.coords
+      // get data from heroku backend
+      let response = await axios({method:'POST',url:'http://localhost:5000/search_result', data: { lat:lat, lng:lng }})
+      // extract data from http response
+      const data = response.data
+      // update state with data
+      this.setState({
+        city: data.city_name,
+        videos: data.videos,
+        events: data.events,
+      })
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
+  async shouldComponentUpdate(){
     try {
       const { lat, lng } = this.state.coords
       // get data from heroku backend
@@ -48,7 +66,7 @@ class Tour extends Component {
     }
     console.log(coords)
     // update state and consequentially marker
-    this.setState({ coords })
+    this.setState({ coords:coords })
   }
 
   // user pressed logout button

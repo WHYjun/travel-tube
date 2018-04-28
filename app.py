@@ -11,6 +11,8 @@ import json
 import argparse
 import requests
 
+import db_insert
+
 TEMPLATE_PATH = os.path.join(os.path.dirname((os.path.abspath(__file__))), 'client/') # app.js or index.html
 STATIC_PATH = os.path.join(os.path.dirname((os.path.abspath(__file__))), 'client/static') # static files
 
@@ -114,6 +116,7 @@ def oauth_authorized(resp):
     access_token = resp['oauth_token']
     session['access_token'] = access_token
     session['screen_name'] = resp['screen_name']
+    db_insert.insert_username(resp['screen_name'])
  
     session['twitter_token'] = (
         resp['oauth_token'],
@@ -128,12 +131,17 @@ def search_result():
     events = eventbrite_search(latlng['lat'],latlng['lng'])
     address = reverse_geocode(geocode)
     city_name = get_cityname(address[0]['address_components'])
-    keyword = city_name + 'tourism'
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--q', help='Search term', default=keyword)
-    parser.add_argument('--max-results', help='Max results', default=10)
-    args = parser.parse_args()
-    videos = youtube_search(args)
+
+    if db_insert.cityExists(city_name):
+        videos = db_insert.getResults(city_name)
+    else:
+        keyword = city_name + 'tourism'
+        parser = argparse.ArgumentParser()
+        parser.add_argument('--q', help='Search term', default=keyword)
+        parser.add_argument('--max-results', help='Max results', default=10)
+        args = parser.parse_args()
+        videos = youtube_search(args)
+        db_insert.insert_results(city_name,videos)
     data = {
         "city_name": city_name,
         "events": events,
@@ -192,7 +200,7 @@ def eventbrite_search(latitude, longitude):
     for event in event_dict['events']:
         key = "event" + str(index)
         index += 1
-        if index > 5:
+        if index > 2:
             return events
         events[key] = {
             'name': event['name']['text'],
