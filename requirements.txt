@@ -1,8 +1,10 @@
 certifi==2018.1.18
 chardet==3.0.4
 click==6.7
+eventbrite==3.3.3
 Flask==0.12.2
 Flask-Cors==3.0.3
+Flask-OAuth==0.12
 google-api-python-client==1.6.5
 googlemaps==2.5.1
 gunicorn==19.7.1
@@ -16,6 +18,7 @@ oauth2client==4.1.2
 pipenv==11.10.0
 pyasn1==0.4.2
 pyasn1-modules==0.2.1
+pymongo==3.6.1
 requests==2.18.4
 rsa==3.4.2
 six==1.11.0

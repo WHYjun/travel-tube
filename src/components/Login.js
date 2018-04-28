@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Segment, Button, Container } from 'semantic-ui-react'
+import { Segment, Button } from 'semantic-ui-react'
 
 class Login extends Component {
   render() {
