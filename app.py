@@ -92,28 +92,24 @@ def index():
  
     access_token = access_token[0]
  
-    return render_template('index.html')
+    return redirect('http://localhost:3000/Tour')
  
 @app.route('/login')
 def login():
-    return twitter.authorize(callback=url_for('oauth_authorized',
-        next=request.args.get('next') or request.referrer or None))
+    return twitter.authorize(callback=url_for('oauth_authorized'))
  
  
 @app.route('/logout')
 def logout():
-    session.pop('screen_name', None)
-    flash('You were signed out')
-    return redirect(request.referrer or url_for('index'))
+    session.pop('aceess_token', None)
+    return redirect('http://localhost:3000/')
  
  
 @app.route('/oauth-authorized')
 @twitter.authorized_handler
 def oauth_authorized(resp):
-    next_url = request.args.get('next') or url_for('index')
     if resp is None:
-        flash(u'You denied the request to sign in.')
-        return redirect(next_url)
+        return redirect('http://localhost:3000/')
  
     access_token = resp['oauth_token']
     session['access_token'] = access_token
@@ -123,21 +119,18 @@ def oauth_authorized(resp):
         resp['oauth_token'],
         resp['oauth_token_secret']
     )
-    return redirect(url_for('index')) # TODO: Change this
+    return redirect("http://localhost:3000/Tour")
 
 @app.route('/search_result', methods=['POST'])
 def search_result():
-    #latlng = json.loads(request.data)
-    latlng = {
-        'lat': 42.360082,
-        'lng': -71.058880
-    }
+    latlng = json.loads(request.data)
     geocode = (latlng['lat'],latlng['lng'])
     events = eventbrite_search(latlng['lat'],latlng['lng'])
     address = reverse_geocode(geocode)
     city_name = get_cityname(address[0]['address_components'])
+    keyword = city_name + 'tourism'
     parser = argparse.ArgumentParser()
-    parser.add_argument('--q', help='Search term', default=city_name)
+    parser.add_argument('--q', help='Search term', default=keyword)
     parser.add_argument('--max-results', help='Max results', default=10)
     args = parser.parse_args()
     videos = youtube_search(args)
