@@ -8,7 +8,7 @@ class Home extends Component {
   // user pressed login button
   async loginPressed() {
     console.log("login pressed");
-    window.open("http://127.0.0.1:5000/index","_self");
+    window.open("http://127.0.0.1:5000/login","_self");
   }
 
   loginButton = () => {

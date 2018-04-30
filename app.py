@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, redirect, url_for, session, request, render_template
 from flask_cors import CORS
-from flask_oauth import OAuth
+from flask_oauth import OAuth # Import flask_oauth from the local directory
 
 from googleapiclient.discovery import build
 import googlemaps
@@ -11,10 +11,10 @@ import json
 import argparse
 import requests
 
+# Manual MongoDB code from Joe McMahan
 import db_insert
 
-TEMPLATE_PATH = os.path.join(os.path.dirname((os.path.abspath(__file__))), 'client/') # app.js or index.html
-STATIC_PATH = os.path.join(os.path.dirname((os.path.abspath(__file__))), 'client/static') # static files
+TEMPLATE_PATH = os.path.join(os.path.dirname((os.path.abspath(__file__))), 'client/static') # static files
 
 try: # for localhost
     AUTH_PATH = os.path.join(os.path.dirname((os.path.abspath(__file__))), 'auth.json')
@@ -73,37 +73,30 @@ twitter = oauth.remote_app('twitter',
     consumer_secret=TWITTER_API_SECRET
 )
 
-app = Flask(__name__,template_folder=STATIC_PATH)
+app = Flask(__name__,template_folder=TEMPLATE_PATH)
 app.secret_key = SECRET_KEY
 CORS(app)
 
 @app.route('/', methods=['GET'])
-def hello():
+def hello(): # Just for Team Assignment 3
     return render_template('hello.html')
 
-# Twitter Oauth from https://pythonspot.com/login-to-flask-app-with-twitter/
+# Twitter Oauth Codes Adapted from https://pythonspot.com/login-to-flask-app-with-twitter/
 @twitter.tokengetter
 def get_twitter_token(token=None):
     return session.get('twitter_token')
- 
-@app.route('/index')
-def index():
-    access_token = session.get('access_token')
-    if access_token is None:
-        return redirect(url_for('login'))
- 
-    access_token = access_token[0]
- 
-    return redirect('http://localhost:3000/Tour')
- 
+
 @app.route('/login')
 def login():
-    return twitter.authorize(callback=url_for('oauth_authorized'))
+    return twitter.authorize(callback=url_for('oauth_authorized',
+        next=request.args.get('next') or request.referrer or None))
  
  
 @app.route('/logout')
 def logout():
-    session.pop('aceess_token', None)
+    session.pop('access_token', None)
+    session.pop('screen_name', None)
+    session.pop('twitter_token', None)
     return redirect('http://localhost:3000/')
  
  
@@ -128,9 +121,17 @@ def oauth_authorized(resp):
 def search_result():
     latlng = json.loads(request.data)
     geocode = (latlng['lat'],latlng['lng'])
-    events = eventbrite_search(latlng['lat'],latlng['lng'])
     address = reverse_geocode(geocode)
-    city_name = get_cityname(address[0]['address_components'])
+
+    try:
+        city_name = get_cityname(address[0]['address_components'])
+    except:
+        no_city = {
+            "city_name": "No City Here!",
+            "events": [],
+            "videos": []
+        }
+        return json.dumps(no_city)
 
     if db_insert.cityExists(city_name):
         videos = db_insert.getResults(city_name)
@@ -142,6 +143,9 @@ def search_result():
         args = parser.parse_args()
         videos = youtube_search(args)
         db_insert.insert_results(city_name,videos)
+
+    events = eventbrite_search(latlng['lat'],latlng['lng'])
+
     data = {
         "city_name": city_name,
         "events": events,
@@ -187,6 +191,7 @@ def youtube_search(options):
             }
     return videos
 
+# EventBrite Search Function
 def eventbrite_search(latitude, longitude):
     headers =  {
     'Authorization': "Bearer " + EVENTBRITE_OAUTH,
@@ -200,7 +205,7 @@ def eventbrite_search(latitude, longitude):
     for event in event_dict['events']:
         key = "event" + str(index)
         index += 1
-        if index > 2:
+        if index > 3: # The number of events shown at web site.
             return events
         events[key] = {
             'name': event['name']['text'],
@@ -214,9 +219,11 @@ def eventbrite_search(latitude, longitude):
             events[key]['image_url'] = event['logo']['url']
     return events
 
+# Google Maps GeoReverse Code
 def reverse_geocode(GeoCode):
     return gmaps.reverse_geocode(GeoCode)
 
+# Get city name only from the address.
 def get_cityname(address_components):
     for component in address_components:
         if "locality" in component['types']:
