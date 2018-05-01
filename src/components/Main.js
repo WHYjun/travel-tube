@@ -13,7 +13,7 @@ class Main extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      username: null,
+      username: 'test',
       coords: {
         lat: 42.350214,
         lng: -71.126877,
@@ -71,7 +71,7 @@ class Main extends Component {
     // if there is no token = fail case
     if (!this.state.username) {
       return (
-
+        <Button onClick={() => this.loginPressed()}> Login </Button>
       )
     }
     // if there is a token
