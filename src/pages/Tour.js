@@ -83,7 +83,7 @@ class Tour extends Component {
 
   showMap = () => {
     return (
-      <div style={{ marginTop: 20 }}>
+      <div align = "center" style={{ marginTop: 20 }}>
         <MapContainer
           coords={this.state.coords}
           onMapClick={this.onMapClick}
