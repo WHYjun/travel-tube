@@ -6,7 +6,7 @@ db = client.cache
 
 def insert_username(user_name):
     users = db.users
-    if users.find({"user_name": user_name}):
+    if users.count({"user_name": user_name}) == 1:
         pass
     else:
         users.insert_one({'user_name': user_name})
