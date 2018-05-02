@@ -21,6 +21,7 @@ class Home extends Component {
           {" "}
           TravelTube{" "}
         </Header>
+        <h2>Login with Twitter</h2>
         <div style={{ textAlign: "center" }}>{this.loginButton()}</div>
       </div>
     );

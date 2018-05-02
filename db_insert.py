@@ -4,9 +4,12 @@ from pprint import pprint
 client = MongoClient()
 db = client.cache
 
-def insert_username(screen_name):
+def insert_username(user_name):
     users = db.users
-    users.insert_one({'screen_name': screen_name})
+    if users.count({"user_name": user_name}) == 1:
+        pass
+    else:
+        users.insert_one({'user_name': user_name})
 
 def insert_city(city):
     users = db.users
