@@ -38,12 +38,12 @@ pip install -r requirements.txt
 Here is the way to get `node` and `npm`: https://nodejs.org/en/ https://www.npmjs.com/get-npm
 
 ```
-npm -i
+npm i
 ```
 
 ### Setting up MongoDB
 
-Here is the way install `MongoDB`: https://docs.mongodb.com/manual/tutorial/ 
+Here is the way to install `MongoDB`: https://docs.mongodb.com/manual/tutorial/ 
 
 ```
 mongod --dbpath "<your_db_path>"
